@@ -7,7 +7,7 @@ Range select input widget
 Demo
 ----
 
-[demo.html](http://htmlpreview.github.com/?https://github.com/FaiblUG/jQuery-Lcn-Range-Select/blob/master/demo.htmldemo.html)
+[demo.html](http://htmlpreview.github.com/?https://github.com/FaiblUG/jQuery-Lcn-Range-Select/blob/master/demo.html)
 
 
 Usage
