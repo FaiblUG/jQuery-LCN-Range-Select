@@ -1,7 +1,36 @@
-(function($) {
+(function (root, factory) {
+  var $ = root.jQuery;
+
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    if ($) {
+      define([], factory.bind(null, $));
+    }
+    else {
+      define(['jquery'], factory);
+    }
+  } else if (typeof exports === 'object') {
+    // Node, CommonJS-like
+    if ($) {
+      module.exports = factory($);
+    }
+    else {
+      module.exports = factory(require('jquery'));
+    }
+  } else {
+    // Browser globals (root is window)
+    if ($) {
+      factory($); // no global needed as we store it as a jQuery plugin on jQuery.fn
+    }
+    else {
+      throw 'Missing required jQuery dependency';
+    }
+  }
+}(this, function ($) {
+
   var
     isDragging = false;
-    $currentHandle = null,
+  $currentHandle = null,
     defaultMinValue = 0,
     defaultMaxValue = 100,
     defaultUnit = '%'
@@ -15,7 +44,7 @@
       $handle2 = $container.find('.handle2'),
       $selectedRange = $container.find('.selected-range'),
       width = $container.width()
-    ;
+      ;
 
     var sliderWidth = $handles.width();
     var stepWidth = width/options.stepsCount;
@@ -42,9 +71,6 @@
   }
 
   function getOptions($container) {
-
-    //TODO: cache result!
-
     var $input = $container.find('input');
     var options = {
       minValue: defaultMinValue,
@@ -158,4 +184,5 @@
 
   };
 
-})(jQuery);
+  return $.fn.lcnRangeSelect;
+}));
