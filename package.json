@@ -1,6 +1,6 @@
 {
   "name": "jquery-lcn-range-select",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Range selext input widget",
   "main": "dist/jquery.lcnRangeSelect.js",
   "scripts": {
