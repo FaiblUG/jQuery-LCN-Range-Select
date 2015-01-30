@@ -12,7 +12,7 @@ input.range-select {
 .range-select-wrapper {
   position: relative;
   cursor: default;
-  margin: $lcn-range-select-handle-width/2 $lcn-range-select-handle-width/2 $lcn-range-select-handle-width*2 $lcn-range-select-handle-width/2;
+  margin: $lcn-range-select-handle-width/2 $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
 
 
   &:before {
@@ -29,7 +29,7 @@ input.range-select {
 
   .handle {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     top: 0;
     height: 0;
     width: 0;
@@ -61,11 +61,8 @@ input.range-select {
   }
 
   .values {
-    position: absolute;
-    bottom: $lcn-range-select-handle-width * -1;
-    width: 100%;
+    padding-top: $lcn-range-select-handle-width;
     font-size: 0.85em;
     text-align: center;
-    z-index: 2;
   }
 }
