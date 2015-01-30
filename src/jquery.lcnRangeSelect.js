@@ -43,10 +43,9 @@
       $handle1 = $container.find('.handle1'),
       $handle2 = $container.find('.handle2'),
       $selectedRange = $container.find('.selected-range'),
-      width = $container.width()
+      width = $container.innerWidth()
       ;
 
-    var sliderWidth = $handles.width();
     var stepWidth = width/options.stepsCount;
 
     value1 = $handle1.attr('data-value');
@@ -55,13 +54,13 @@
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
       var value = $handle.attr('data-value');
-      var x = value * stepWidth;
-      $handle.css({ left: x - sliderWidth/2 });
+      var x = (value - options.minValue) * stepWidth;
+      $handle.css({ left: x });
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + options.unit);
     });
 
-    var selectedRangeLeftPos = $handle1.position().left + (sliderWidth / 2);
-    var selectedRangeWidth = $handle2.position().left + (sliderWidth / 2) - selectedRangeLeftPos;
+    var selectedRangeLeftPos = $handle1.position().left;
+    var selectedRangeWidth = $handle2.position().left - selectedRangeLeftPos;
 
     $selectedRange.css({
       left: selectedRangeLeftPos,
@@ -90,7 +89,7 @@
       options.unit = $input.attr('data-unit');
     }
 
-    options.stepsCount = Math.round((options.maxValue - options.minValue));
+    options.stepsCount = options.maxValue - options.minValue;
 
     return options;
   }
@@ -140,7 +139,7 @@
 
       var options = getOptions($container);
 
-      var width = $container.width();
+      var width = $container.innerWidth();
 
       if (!e.offsetX && e.originalEvent.touches) {
         // touch events
@@ -156,7 +155,7 @@
       var xPos = e.target.offsetLeft + e.offsetX;
 
       var stepWidth = width/options.stepsCount;
-      var value = Math.round(xPos / stepWidth);
+      var value = options.minValue + Math.round(xPos / stepWidth);
 
       value = Math.max(options.minValue, value);
       value = Math.min(options.maxValue, value);

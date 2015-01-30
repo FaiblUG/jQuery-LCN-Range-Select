@@ -1,39 +1,70 @@
+$lcn-range-select-border-width: 0.8em !default;
+$lcn-range-select-border-color: #ccc !default;
+$lcn-range-select-border-selected-range-color: #00ffff !default;
+$lcn-range-select-handle-width: 2em !default;
+$lcn-range-select-handle-color: #000 !default;
+
+
 input.range-select {
   display: none;
 }
 
 .range-select-wrapper {
   position: relative;
-  height: 5px;
-  width: 100%;
-  background-color: #ccc;
   cursor: default;
-  margin-bottom: 30px;
+  margin: $lcn-range-select-handle-width/2 $lcn-range-select-handle-width/2 $lcn-range-select-handle-width*2 $lcn-range-select-handle-width/2;
+
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    height: $lcn-range-select-border-width;
+    width: 100%;
+    background: $lcn-range-select-border-color;
+  }
+
 
   .handle {
     position: absolute;
     z-index: 2;
-    top: -7px;
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
+    top: 0;
+    height: 0;
+    width: 0;
+    border: 0;
+    padding: 0;
+
     cursor: pointer;
-    background: #000;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 3;
+      top: -$lcn-range-select-handle-width/2 + $lcn-range-select-border-width/2;
+      left: -$lcn-range-select-handle-width/2;
+      height: $lcn-range-select-handle-width;
+      width: $lcn-range-select-handle-width;
+      border-radius: 50%;
+      background: $lcn-range-select-handle-color;
+    }
+
   }
 
   .selected-range {
     position: absolute;
     z-index: 1;
-    top: -2px;
-    bottom: -2px;
-    background-color: green;
+    top: 0;
+    height: $lcn-range-select-border-width;
+    background-color: $lcn-range-select-border-selected-range-color;
   }
 
   .values {
     position: absolute;
-    bottom: -20px;
+    bottom: $lcn-range-select-handle-width * -1;
     width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.85em;
     text-align: center;
     z-index: 2;
   }

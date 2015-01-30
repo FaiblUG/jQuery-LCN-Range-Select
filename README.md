@@ -19,7 +19,17 @@ Usage
 
 ### 2. Include input form element which should contain your range (format "startValue;endValue")
     
-    <input type="text" class="range-select" value="0;100" data-min="0" data-max="100" data-unit="%" /></div>
+    <input type="text" class="range-select" value="0;100">
+    
+The initial value can be defined via the value attribute:
+    
+    value="0;100"
+    
+It is also possible to override the min, max and unit options:
+    
+    data-min="0"
+    data-max="100"
+    data-unit="%"
     
 ### 3. Include Scripts and Styles
     
