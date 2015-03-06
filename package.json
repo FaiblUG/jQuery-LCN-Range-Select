@@ -1,8 +1,14 @@
 {
   "name": "jquery-lcn-range-select",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Range selext input widget",
-  "main": "dist/jquery.lcnRangeSelect.js",
+  "main": "./(dist/jquery.lcnRangeSelect.js",
+  "browser": {
+    "jquery-lcn-circle-range-select": "./dist/jquery.lcnRangeSelect.js"
+  },
+  "style": [
+    "./dist/jquery.lcnRangeSelect.css"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
