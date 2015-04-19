@@ -33,7 +33,8 @@
   $currentHandle = null,
     defaultMinValue = 0,
     defaultMaxValue = 100,
-    defaultUnit = '%'
+    defaultUnit = '%',
+    defaultStep = 1
   ;
 
   function updateWidget($container) {
@@ -46,7 +47,7 @@
       width = $container.innerWidth()
       ;
 
-    var stepWidth = width/options.stepsCount;
+    var stepWidth = width / options.stepsCount;
 
     value1 = $handle1.attr('data-value');
     value2 = $handle2.attr('data-value');
@@ -54,7 +55,7 @@
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
       var value = $handle.attr('data-value');
-      var x = (value - options.minValue) * stepWidth;
+      var x = ((value - options.minValue) * stepWidth) / options.step;
       $handle.css({ left: x });
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + options.unit);
     });
@@ -74,7 +75,8 @@
     var options = {
       minValue: defaultMinValue,
       maxValue: defaultMaxValue,
-      unit: defaultUnit
+      unit: defaultUnit,
+      step: defaultStep
     };
 
     if ($input.attr('data-min') !== undefined) {
@@ -89,7 +91,11 @@
       options.unit = $input.attr('data-unit');
     }
 
-    options.stepsCount = options.maxValue - options.minValue;
+    if ($input.attr('data-step') !== undefined) {
+      options.step = parseFloat($input.attr('data-step'));
+    }
+
+    options.stepsCount = (options.maxValue - options.minValue) / options.step;
 
     return options;
   }
@@ -107,8 +113,8 @@
 
     if ($input.val()) {
       var values = $input.val().split(';');
-      value1 = parseInt(values[0], 10);
-      value2 = parseInt(values[1], 10);
+      value1 = parseFloat(values[0]);
+      value2 = parseFloat(values[1]);
     }
 
     $container.append('<div class="handle handle1" data-value="' + value1 + '" data-value-target=".value1"></div>');
@@ -155,7 +161,7 @@
       var xPos = e.target.offsetLeft + e.offsetX;
 
       var stepWidth = width/options.stepsCount;
-      var value = options.minValue + Math.round(xPos / stepWidth);
+      var value = options.minValue + (Math.round(xPos / stepWidth)) * options.step;
 
       value = Math.max(options.minValue, value);
       value = Math.min(options.maxValue, value);
