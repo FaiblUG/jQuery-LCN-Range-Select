@@ -42,7 +42,6 @@
       options = getOptions($container),
       $handles = $container.find('.handle'),
       $handle1 = $container.find('.handle1'),
-      $handle2 = $container.find('.handle2'),
       $selectedRange = $container.find('.selected-range'),
       width = $container.innerWidth()
       ;
@@ -50,7 +49,12 @@
     var stepWidth = width / options.stepsCount;
 
     value1 = $handle1.attr('data-value');
-    value2 = $handle2.attr('data-value');
+    if (!options.isSingleValue) {
+      var $handle2 = $container.find('.handle2');
+      value2 = $handle2.attr('data-value');
+    }
+
+
 
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
@@ -61,13 +65,19 @@
     });
 
     var selectedRangeLeftPos = $handle1.position().left;
-    var selectedRangeWidth = $handle2.position().left - selectedRangeLeftPos;
+    if (options.isSingleValue) {
+      $container.find('input').val(value1).trigger('change');
+    }
+    else {
+      var selectedRangeWidth = $handle2.position().left - selectedRangeLeftPos;
+      $selectedRange.css({
+        left: selectedRangeLeftPos,
+        width: selectedRangeWidth
+      });
+      $container.find('input').val(value1+';'+value2).trigger('change');
+    }
 
-    $selectedRange.css({
-      left: selectedRangeLeftPos,
-      width: selectedRangeWidth
-    });
-    $container.find('input').val(value1+';'+value2).trigger('change');
+
   }
 
   function getOptions($container) {
@@ -76,7 +86,8 @@
       minValue: defaultMinValue,
       maxValue: defaultMaxValue,
       unit: defaultUnit,
-      step: defaultStep
+      step: defaultStep,
+      isSingleValue: _isSingleValue($input)
     };
 
     if ($input.attr('data-min') !== undefined) {
@@ -109,17 +120,32 @@
     var options = getOptions($container);
 
     var value1 = options.minValue;
-    var value2 = options.maxValue;
+    if (!options.isSingleValue) {
+      var value2 = options.maxValue;
+    }
+
+
 
     if ($input.val()) {
-      var values = $input.val().split(';');
-      value1 = parseFloat(values[0]);
-      value2 = parseFloat(values[1]);
+      if (options.isSingleValue) {
+        value1 = parseFloat($input.val());
+      }
+      else {
+        var values = $input.val().split(';');
+        value1 = parseFloat(values[0]);
+        value2 = parseFloat(values[1]);
+      }
     }
 
     $container.append('<div class="handle handle1" data-value="' + value1 + '" data-value-target=".value1"></div>');
-    $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
-    $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+    if (options.isSingleValue) {
+      $container.append('<div class="values"><span class="value1"></span></div>');
+    }
+    else {
+      $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
+      $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+    }
+
     $container.append('<div class="selected-range"></div>');
 
     updateWidget($container);
@@ -137,6 +163,11 @@
     });
 
     $(window).on('resize', updateWidget.bind(null, $container));
+  }
+
+
+  function _isSingleValue($input) {
+    return $input.attr('data-single-value') !== undefined && $input.attr('data-single-value') !== 'false';
   }
 
   $(document).on('mousemove touchmove', function (e) {
@@ -166,13 +197,15 @@
       value = Math.max(options.minValue, value);
       value = Math.min(options.maxValue, value);
 
-      var $otherHandle = $container.find('.handle').not($currentHandle[0]);
+      if (!options.isSingleValue) {
+        var $otherHandle = $container.find('.handle').not($currentHandle[0]);
 
-      if ($currentHandle.hasClass('handle1')) {
-        value = Math.min(parseInt($container.find('.handle2').attr('data-value'), 10) - 1, value);
-      }
-      else {
-        value = Math.max(parseInt($container.find('.handle1').attr('data-value'), 10) + 1, value);
+        if ($currentHandle.hasClass('handle1')) {
+          value = Math.min(parseInt($container.find('.handle2').attr('data-value'), 10) - 1, value);
+        }
+        else {
+          value = Math.max(parseInt($container.find('.handle1').attr('data-value'), 10) + 1, value);
+        }
       }
 
       $currentHandle.attr('data-value', value);
