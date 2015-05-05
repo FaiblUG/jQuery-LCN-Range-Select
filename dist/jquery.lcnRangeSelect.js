@@ -222,5 +222,7 @@
 
   };
 
+  $(function() { $('input.range-select[data-auto-init]').lcnRangeSelect(); });
+
   return $.fn.lcnRangeSelect;
 }));

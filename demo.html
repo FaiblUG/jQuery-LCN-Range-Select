@@ -10,19 +10,18 @@
 <h1>jQuery.lcnRangeSelect Demo</h1>
 
 <h2>Without predefined value</h2>
-<input type="text" name="test-1" class="range-select">
+<input type="text" name="test-1" class="range-select" data-auto-init>
 
 <h2>With predefined value and additional options</h2>
 <p>In this example, the min value is 30, the max value is 300 and the initial range is 90 to 180 with a step size of 0.5.</p>
-<input type="text" name="test-2" class="range-select" value="90;180" data-min="30" data-max="300" data-unit="€" data-step="0.5">
+<input type="text" name="test-2" class="range-select" value="90;180" data-auto-init data-min="30" data-max="300" data-unit="€" data-step="0.5">
 
 
 <h2>Single value demo</h2>
-<input type="text" name="test-3" class="range-select" data-single-value>
+<input type="text" name="test-3" class="range-select" data-auto-init data-single-value>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script src="dist/jquery.lcnRangeSelect.js"></script>
-<script>jQuery('input.range-select').lcnRangeSelect();</script>
 </body>
 </html>
