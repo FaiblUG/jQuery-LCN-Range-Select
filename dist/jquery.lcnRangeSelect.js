@@ -91,11 +91,11 @@
     };
 
     if ($input.attr('data-min') !== undefined) {
-      options.minValue = parseInt($input.attr('data-min'), 10);
+      options.minValue = parseFloat($input.attr('data-min'));
     }
 
     if ($input.attr('data-max') !== undefined) {
-      options.maxValue = parseInt($input.attr('data-max'), 10);
+      options.maxValue = parseFloat($input.attr('data-max'));
     }
 
     if ($input.attr('data-unit') !== undefined) {
@@ -201,11 +201,18 @@
         var $otherHandle = $container.find('.handle').not($currentHandle[0]);
 
         if ($currentHandle.hasClass('handle1')) {
-          value = Math.min(parseInt($container.find('.handle2').attr('data-value'), 10) - 1, value);
+          value = Math.min(parseFloat($container.find('.handle2').attr('data-value')) - options.step, value);
         }
         else {
-          value = Math.max(parseInt($container.find('.handle1').attr('data-value'), 10) + 1, value);
+          value = Math.max(parseFloat($container.find('.handle1').attr('data-value')) + options.step, value);
         }
+      }
+
+      if (options.step < 0.1) {
+        value = value.toPrecision(2);
+      }
+      else if (options.step < 1) {
+        value = value.toPrecision(1);
       }
 
       $currentHandle.attr('data-value', value);
