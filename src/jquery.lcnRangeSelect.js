@@ -209,10 +209,10 @@
       }
 
       if (options.step < 0.1) {
-        value = value.toPrecision(2);
+        value = Math.round(value * 100) / 100
       }
       else if (options.step < 1) {
-        value = value.toPrecision(1);
+        value = Math.round(value * 10) / 10
       }
 
       $currentHandle.attr('data-value', value);
