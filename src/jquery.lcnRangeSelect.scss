@@ -12,14 +12,14 @@ input.range-select {
 .range-select-wrapper {
   position: relative;
   cursor: default;
-  margin: $lcn-range-select-handle-width/2 $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
+  padding: $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
 
 
   &:before {
     content: '';
     position: absolute;
     z-index: 0;
-    top: 0;
+    top: $lcn-range-select-handle-width/2;
     left: 0;
     height: $lcn-range-select-border-width;
     width: 100%;
@@ -42,7 +42,7 @@ input.range-select {
       content: '';
       position: absolute;
       z-index: 3;
-      top: -$lcn-range-select-handle-width/2 + $lcn-range-select-border-width/2;
+      top: $lcn-range-select-border-width/2;
       left: -$lcn-range-select-handle-width/2;
       height: $lcn-range-select-handle-width;
       width: $lcn-range-select-handle-width;
@@ -55,7 +55,7 @@ input.range-select {
   .selected-range {
     position: absolute;
     z-index: 1;
-    top: 0;
+    top: $lcn-range-select-handle-width/2;
     height: $lcn-range-select-border-width;
     background-color: $lcn-range-select-border-selected-range-color;
   }

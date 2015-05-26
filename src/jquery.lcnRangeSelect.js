@@ -172,6 +172,26 @@
 
   $(document).on('mousemove touchmove', function (e) {
     if (isDragging) {
+
+      var $draggingTarget = $(e.target);
+
+      $draggingWrapper = $draggingTarget.closest('.range-select-wrapper');
+      if ($draggingWrapper.length === 0) {
+        return;
+      }
+
+      if ($currentHandle.hasClass('handle1')) {
+        $draggingHandle = $draggingWrapper.find('.handle1');
+      }
+      else if ($currentHandle.hasClass('handle2')) {
+        $draggingHandle = $draggingWrapper.find('.handle2');
+      }
+
+      if ($draggingHandle[0] !== $currentHandle[0]) {
+        return;
+      }
+
+
       var $container = $currentHandle.closest('.range-select-wrapper');
 
       var options = getOptions($container);
@@ -180,16 +200,20 @@
 
       if (!e.offsetX && e.originalEvent.touches) {
         // touch events
-        var targetOffset = $(e.target).offset();
+        var targetOffset = $draggingTarget.offset();
         e.offsetX = e.originalEvent.touches[0].pageX - targetOffset.left;
       }
       else if(typeof e.offsetX === "undefined" || typeof e.offsetY === "undefined") {
         // firefox compatibility
-        var targetOffset = $(e.target).offset();
+        var targetOffset = $draggingTarget.offset();
         e.offsetX = e.pageX - targetOffset.left;
       }
 
-      var xPos = e.target.offsetLeft + e.offsetX;
+      var xPos = e.offsetX;
+      if ($draggingTarget.hasClass('handle')) {
+        xPos += e.target.offsetLeft;
+      }
+
 
       var stepWidth = width/options.stepsCount;
       var value = options.minValue + (Math.round(xPos / stepWidth)) * options.step;
