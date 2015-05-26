@@ -12,6 +12,7 @@ input.range-select {
 .range-select-wrapper {
   position: relative;
   cursor: default;
+  margin: 0 $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
   padding: $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
 
 

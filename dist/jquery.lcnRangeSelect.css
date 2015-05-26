@@ -4,6 +4,7 @@ input.range-select {
 .range-select-wrapper {
   position: relative;
   cursor: default;
+  margin: 0 1em 0 1em;
   padding: 1em 0 1em; }
   .range-select-wrapper:before {
     content: '';
