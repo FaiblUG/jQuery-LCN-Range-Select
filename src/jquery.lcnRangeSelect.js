@@ -30,11 +30,13 @@
 
   var
     isDragging = false;
-  $currentHandle = null,
+    $currentHandle = null,
     defaultMinValue = 0,
     defaultMaxValue = 100,
     defaultUnit = '%',
-    defaultStep = 1
+    defaultStep = 1,
+    defaultDirection = 'ltr',
+    supportedDirections = ['ltr', 'btt']
   ;
 
   function updateWidget($container) {
@@ -42,11 +44,18 @@
       options = getOptions($container),
       $handles = $container.find('.handle'),
       $handle1 = $container.find('.handle1'),
-      $selectedRange = $container.find('.selected-range'),
-      width = $container.innerWidth()
+      $selectedRange = $container.find('.selected-range')
       ;
 
-    var stepWidth = width / options.stepsCount;
+    var size;
+    if (options.direction === 'ltr') {
+      size = $container.innerWidth();
+    }
+    else if (options.direction === 'btt') {
+      size = $container.innerHeight();
+    }
+
+    var stepSize = size / options.stepsCount;
 
     value1 = $handle1.attr('data-value');
     if (!options.isSingleValue) {
@@ -59,21 +68,46 @@
     $handles.each(function(idx, handle) {
       var $handle = $(handle);
       var value = $handle.attr('data-value');
-      var x = ((value - options.minValue) * stepWidth) / options.step;
-      $handle.css({ left: x });
+      var pos = ((value - options.minValue) * stepSize) / options.step;
+
+      if (options.direction === 'ltr') {
+        $handle.css({left: pos});
+      }
+      else if (options.direction === 'btt') {
+        if (idx === 0) {
+          pos = pos - $handle.width() / 2;
+        }
+        else {
+          pos = pos - $handle.width() / 2;
+        }
+        $handle.css({bottom: pos});
+      }
+
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + options.unit);
     });
 
-    var selectedRangeLeftPos = $handle1.position().left;
+
     if (options.isSingleValue) {
       $container.find('input').val(value1).trigger('change');
     }
     else {
-      var selectedRangeWidth = $handle2.position().left - selectedRangeLeftPos;
-      $selectedRange.css({
-        left: selectedRangeLeftPos,
-        width: selectedRangeWidth
-      });
+      if (options.direction === 'ltr') {
+        var selectedRangeLeftPos = $handle1.position().left;
+        var selectedRangeWidth = $handle2.position().left - selectedRangeLeftPos;
+        $selectedRange.css({
+          left: selectedRangeLeftPos,
+          width: selectedRangeWidth
+        });
+      }
+      else if (options.direction === 'btt') {
+        var selectedRangeTopPos = $handle2.position().top + $handle2.width() / 2;
+        var selectedRangeHeight = $handle1.position().top + $handle2.width() / 2 - selectedRangeTopPos;
+        $selectedRange.css({
+          top: selectedRangeTopPos,
+          height: selectedRangeHeight
+        });
+      }
+
       $container.find('input').val(value1+';'+value2).trigger('change');
     }
 
@@ -81,12 +115,14 @@
   }
 
   function getOptions($container) {
-    var $input = $container.find('input');
+    $input = $container[0].nodeName === 'INPUT' ? $container : $container.find('input');
+
     var options = {
       minValue: defaultMinValue,
       maxValue: defaultMaxValue,
       unit: defaultUnit,
       step: defaultStep,
+      direction: defaultDirection,
       isSingleValue: _isSingleValue($input)
     };
 
@@ -106,18 +142,31 @@
       options.step = parseFloat($input.attr('data-step'));
     }
 
+    if ($input.attr('data-direction') !== undefined) {
+        if (supportedDirections.indexOf($input.attr('data-direction')) === -1) {
+            throw new Error('Unsupported direction: '+$input.attr('data-direction'));
+        }
+        else {
+            options.direction = $input.attr('data-direction');
+        }
+    }
+
     options.stepsCount = (options.maxValue - options.minValue) / options.step;
 
     return options;
   }
 
   function init($input) {
+    var options = getOptions($input);
+    $container = $('<div>');
+    $container.addClass('range-select-wrapper');
+    $container.addClass('direction-'+options.direction);
 
-    $container = $('<div class="range-select-wrapper"></div>');
     $input.wrap($container);
     $container = $input.parent();
 
-    var options = getOptions($container);
+
+
 
     var value1 = options.minValue;
     if (!options.isSingleValue) {
@@ -143,7 +192,12 @@
     }
     else {
       $container.append('<div class="handle handle2" data-value="' + value2 + '" data-value-target=".value2"></div>');
-      $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+      if (options.direction === 'ltr') {
+        $container.append('<div class="values"><span class="value1"></span> - <span class="value2"></span></div>');
+      }
+      else if (options.direction === 'btt') {
+        $container.append('<div class="values"><span class="value2"></span> - <span class="value1"></span></div>');
+      }
     }
 
     $container.append('<div class="selected-range"></div>');
@@ -196,27 +250,41 @@
 
       var options = getOptions($container);
 
-      var width = $container.innerWidth();
+
 
       if (!e.offsetX && e.originalEvent.touches) {
         // touch events
         var targetOffset = $draggingTarget.offset();
         e.offsetX = e.originalEvent.touches[0].pageX - targetOffset.left;
+        e.offsetY = e.originalEvent.touches[0].pageY - targetOffset.top;
       }
       else if(typeof e.offsetX === "undefined" || typeof e.offsetY === "undefined") {
         // firefox compatibility
         var targetOffset = $draggingTarget.offset();
         e.offsetX = e.pageX - targetOffset.left;
+        e.offsetY = e.pageY - targetOffset.top;
       }
 
       var xPos = e.offsetX;
+      var yPos = e.offsetY;
       if ($draggingTarget.hasClass('handle')) {
         xPos += e.target.offsetLeft;
+        yPos += e.target.offsetTop;
       }
 
+      var size;
+      var pos;
+      if (options.direction === 'ltr') {
+        size = $container.innerWidth();
+        pos = xPos;
+      }
+      else if (options.direction === 'btt') {
+        size = $container.innerHeight();
+        pos = size - yPos;
+      }
 
-      var stepWidth = width/options.stepsCount;
-      var value = options.minValue + (Math.round(xPos / stepWidth)) * options.step;
+      var stepSize = size/options.stepsCount;
+      var value = options.minValue + (Math.round(pos / stepSize)) * options.step;
 
       value = Math.max(options.minValue, value);
       value = Math.min(options.maxValue, value);

@@ -48,6 +48,10 @@ The class range-select is required. If you add the attribute data-auto-init, the
 
 The value of the input form field then only consists of a single number and not a number pair.
 
+#### Change slide direction from left-to-right (default) to bottom-to-left
+
+    data-direction="btt"
+
 #### Initialize the widget manually
 
 If you omit the data-auto-init attribute on your input tag or if you create input tags dynamically after the domReady event has fired, you need to initialize the widget manually:

@@ -1,7 +1,7 @@
 $lcn-range-select-border-width: 0.8em !default;
 $lcn-range-select-border-color: #ccc !default;
 $lcn-range-select-border-selected-range-color: #00ffff !default;
-$lcn-range-select-handle-width: 2em !default;
+$lcn-range-select-handle-diameter: 2em !default;
 $lcn-range-select-handle-color: #000 !default;
 
 
@@ -12,18 +12,11 @@ input.range-select {
 .range-select-wrapper {
   position: relative;
   cursor: default;
-  margin: 0 $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
-  padding: $lcn-range-select-handle-width/2 0 $lcn-range-select-handle-width/2;
-
 
   &:before {
     content: '';
     position: absolute;
     z-index: 0;
-    top: $lcn-range-select-handle-width/2;
-    left: 0;
-    height: $lcn-range-select-border-width;
-    width: 100%;
     background: $lcn-range-select-border-color;
   }
 
@@ -31,9 +24,8 @@ input.range-select {
   .handle {
     position: absolute;
     z-index: 3;
-    top: 0;
-    height: 0;
-    width: 0;
+    height: $lcn-range-select-handle-diameter;
+    width: $lcn-range-select-handle-diameter;
     border: 0;
     padding: 0;
 
@@ -44,9 +36,9 @@ input.range-select {
       position: absolute;
       z-index: 3;
       top: $lcn-range-select-border-width/2;
-      left: -$lcn-range-select-handle-width/2;
-      height: $lcn-range-select-handle-width;
-      width: $lcn-range-select-handle-width;
+      left: -$lcn-range-select-handle-diameter/2;
+      height: $lcn-range-select-handle-diameter;
+      width: $lcn-range-select-handle-diameter;
       border-radius: 50%;
       background: $lcn-range-select-handle-color;
     }
@@ -56,14 +48,72 @@ input.range-select {
   .selected-range {
     position: absolute;
     z-index: 1;
-    top: $lcn-range-select-handle-width/2;
-    height: $lcn-range-select-border-width;
     background-color: $lcn-range-select-border-selected-range-color;
   }
 
   .values {
-    padding-top: $lcn-range-select-handle-width;
     font-size: 0.85em;
     text-align: center;
   }
+
+
+  &.direction-ltr {
+    margin: 0 $lcn-range-select-handle-diameter/2 0 $lcn-range-select-handle-diameter/2;
+    padding: $lcn-range-select-handle-diameter/2 0 $lcn-range-select-handle-diameter/2;
+
+
+    &:before {
+      top: $lcn-range-select-handle-diameter/2;
+      left: 0;
+      height: $lcn-range-select-border-width;
+      width: 100%;
+    }
+
+    .selected-range {
+      top: $lcn-range-select-handle-diameter/2;
+      height: $lcn-range-select-border-width;
+    }
+
+    .handle {
+      margin-top: -$lcn-range-select-handle-diameter/2;
+    }
+
+    .values {
+      padding-top: $lcn-range-select-handle-diameter;
+    }
+  }
+
+  &.direction-btt {
+    height: 100%;
+    min-height: $lcn-range-select-handle-diameter * 4;
+    display: inline-block;
+    width: 0;
+    margin: $lcn-range-select-handle-diameter 0 $lcn-range-select-handle-diameter 0;
+    padding: 0 $lcn-range-select-handle-diameter * 3 0 $lcn-range-select-handle-diameter;
+
+    &:before {
+      top: 0;
+      left: $lcn-range-select-handle-diameter - 0.5 * $lcn-range-select-border-width;
+      height: 100%;
+      width: $lcn-range-select-border-width;
+    }
+
+    .selected-range {
+      left: $lcn-range-select-handle-diameter - 0.5 * $lcn-range-select-border-width;
+      width: $lcn-range-select-border-width;
+    }
+
+    .values {
+      position: absolute;
+      left: $lcn-range-select-handle-diameter * 2;
+      top: 50%;
+      margin-top: -1.5em;
+
+      .value1,
+      .value2 {
+        display: block;
+      }
+    }
+  }
+
 }

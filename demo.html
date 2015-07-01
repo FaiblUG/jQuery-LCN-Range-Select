@@ -10,15 +10,22 @@
 <h1>jQuery.lcnRangeSelect Demo</h1>
 
 <h2>Without predefined value</h2>
-<input type="text" name="test-1" class="range-select" data-auto-init>
+<input type="text" class="range-select" data-auto-init>
 
 <h2>With predefined value and additional options</h2>
 <p>In this example, the min value is 0, the max value is 1 and the initial range is 0.3 to 0.6 with a step size of 0.1.</p>
-<input type="text" name="test-2" class="range-select" value="0.3;0.6" data-auto-init data-min="0" data-max="1" data-unit="mm" data-step="0.1">
+<input type="text" class="range-select" value="0.3;0.6" data-auto-init data-min="0" data-max="1" data-unit="mm" data-step="0.1">
 
 
 <h2>Single value demo</h2>
-<input type="text" name="test-3" class="range-select" data-auto-init data-single-value>
+<input type="text" class="range-select" data-auto-init data-single-value>
+
+<h2>Vertical mode</h2>
+<p>Add the attribute data-direction="btt" to trigger vertical (bottom-to-top) sliding</p>
+<input type="text" class="range-select" data-direction="btt" data-auto-init>
+<input type="text" class="range-select" data-direction="btt" data-auto-init>
+<input type="text" class="range-select" data-direction="btt" data-auto-init>
+<input type="text" class="range-select" data-direction="btt" data-auto-init>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
