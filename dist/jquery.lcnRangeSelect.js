@@ -74,12 +74,6 @@
         $handle.css({left: pos});
       }
       else if (options.direction === 'btt') {
-        if (idx === 0) {
-          pos = pos - $handle.width() / 2;
-        }
-        else {
-          pos = pos - $handle.width() / 2;
-        }
         $handle.css({bottom: pos});
       }
 

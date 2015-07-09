@@ -1,7 +1,10 @@
 {
   "name": "jquery-lcn-range-select",
-  "version": "1.1.7",
-  "main": "dist/jquery.lcnRangeSelect.js",
+  "version": "0.0.0",
+  "main": [
+    "src/jquery.lcnRangeSelect.js",
+    "src/jquery.lcnRangeSelect.scss"
+  ],
   "ignore": [
     ".gitignore",
     "package.json",

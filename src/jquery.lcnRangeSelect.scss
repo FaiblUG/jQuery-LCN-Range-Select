@@ -1,7 +1,7 @@
-$lcn-range-select-border-width: 0.8em !default;
+$lcn-range-select-border-width: 0.4em !default;
 $lcn-range-select-border-color: #ccc !default;
 $lcn-range-select-border-selected-range-color: #00ffff !default;
-$lcn-range-select-handle-diameter: 2em !default;
+$lcn-range-select-handle-diameter: 1.3em !default;
 $lcn-range-select-handle-color: #000 !default;
 
 
@@ -52,6 +52,7 @@ input.range-select {
   }
 
   .values {
+    pointer-events: none;
     font-size: 0.85em;
     text-align: center;
   }
@@ -64,9 +65,9 @@ input.range-select {
 
     &:before {
       top: $lcn-range-select-handle-diameter/2;
-      left: 0;
+      left: -$lcn-range-select-handle-diameter / 2;
       height: $lcn-range-select-border-width;
-      width: 100%;
+      right: -$lcn-range-select-handle-diameter / 2;
     }
 
     .selected-range {
@@ -92,9 +93,9 @@ input.range-select {
     padding: 0 $lcn-range-select-handle-diameter * 3 0 $lcn-range-select-handle-diameter;
 
     &:before {
-      top: 0;
+      top: -$lcn-range-select-handle-diameter / 2;
       left: $lcn-range-select-handle-diameter - 0.5 * $lcn-range-select-border-width;
-      height: 100%;
+      bottom: 0;
       width: $lcn-range-select-border-width;
     }
 
