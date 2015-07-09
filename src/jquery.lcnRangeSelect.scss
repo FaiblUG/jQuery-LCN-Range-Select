@@ -108,7 +108,8 @@ input.range-select {
       position: absolute;
       left: $lcn-range-select-handle-diameter * 2;
       top: 50%;
-      margin-top: -1.5em;
+      line-height: 1em;
+      margin-top: -2em;
 
       .value1,
       .value2 {

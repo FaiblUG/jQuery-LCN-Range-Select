@@ -69,6 +69,7 @@ input.range-select {
       position: absolute;
       left: 2.6em;
       top: 50%;
-      margin-top: -1.5em; }
+      line-height: 1em;
+      margin-top: -2em; }
       .range-select-wrapper.direction-btt .values .value1, .range-select-wrapper.direction-btt .values .value2 {
         display: block; }
